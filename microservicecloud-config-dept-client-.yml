@@ -1,0 +1,45 @@
+spring: 
+  profiles: 
+    active:
+    - dev
+---
+server:
+  port: 8001
+spring:
+   application:
+    name: microservicecloud-config-dept-client              # 对外暴漏的微服务名称 ，集群环境多个服务名称必须保持一直，对外暴露统一的服务实例名
+   datasource:
+    type: com.alibaba.druid.pool.DruidDataSource            # 当前数据源操作类型
+    driver-class-name: org.gjt.mm.mysql.Driver              # mysql驱动包
+    url: jdbc:mysql://192.168.2.89:3306/clouddb01           # 数据库名称   数据库名称  不同的微服务可以连接不同的数据库
+    username: root
+    password: dzl
+    dbcp2:
+      min-idle: 5                                           # 数据库连接池的最小维持连接数
+      initial-size: 5                                       # 初始化连接数
+      max-total: 5                                          # 最大连接数
+      max-wait-millis: 200 
+  
+mybatis:
+  config-location: classpath:mybatis/mybatis.cfg.xml        # mybatis配置文件所在路径
+  type-aliases-package: com.dzl.springcloud.entity          # 所有Entity别名类所在包
+  mapper-locations:
+  - classpath:mybatis/mapper/**/*.xml                       # mapper映射文件
+    
+                                 # 等待连接获取的最大超时时间
+      
+eureka:
+  client: #客户端注册进eureka服务列表内
+    service-url: 
+      #defaultZone: http://localhost:7001/eureka(单机)
+      defaultZone: http://eureka7001.com:7001/eureka/   
+  instance:
+    instance-id: microservicecloud-config-dept8001   #注册的主机实例名，它是区分同一服务中不同实例的唯一标识
+    prefer-ip-address: true     #开启以ip注册  为主机实例名，但必须同 eureka.instance.ip-address = 127.0.0.1一起配置
+ 
+info: 
+  app.name: atguigu-microservicecloud
+  company.name: www.atguigu.com
+  build.artifactId: $project.artifactId$
+  build.version: $project.version$
+
